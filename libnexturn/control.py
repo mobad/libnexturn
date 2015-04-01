@@ -138,7 +138,7 @@ class NexturnRGBController(NexturnConnectionController):
             self.characteristics = colorcontrol.getCharacteristics()
 
         # write
-        self.characteristics[4].write(cv)        
+        self.characteristics[4].write(cv, withResponse=True)
 
     def rgb(self, r, g, b, p):
         self._write_rgb(r, g, b, p)
@@ -189,11 +189,12 @@ class NexturnRGBController(NexturnConnectionController):
         while datetime.datetime.now() < end:
             for c in self.args.colors:
                 while current != c:
+                    print "SLEEPING"
+                    time.sleep(sleepperiod)
                     current = self.rgbstepTo(current, c)
                     print "STEPPING TO %s" % current
                     self.rgb_all(*current)
-                    print "SLEEPING"
-                    time.sleep(sleepperiod)
+
 
 
 class NexturnHSVController(NexturnRGBController):
