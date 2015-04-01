@@ -1,6 +1,6 @@
 # LibNexturn
 
-A command line interface to control a Yifang SH201 Bluetooth Lightbulb
+A command line interface to control a Nyrius Smart Bulb
 
 
 ## Dependencies

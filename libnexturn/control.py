@@ -305,7 +305,7 @@ class NexturnNameController(NexturnConnectionController): # UNTESTED
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Control a Nexturn Light Bulb (Yifang SH201)')
+    parser = argparse.ArgumentParser(description='Control a Nyrius Smart Bulb')
     subparsers = parser.add_subparsers()
 
     # color parse
