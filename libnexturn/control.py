@@ -54,7 +54,6 @@ def required_length():
 
 
 class NexturnConnectionController(object):
-
     def connect(self, addr):
         while True:
             try:
@@ -78,6 +77,8 @@ class NexturnConnectionController(object):
 
 
 class NexturnRGBController(NexturnConnectionController):
+    characteristics = None;
+
     def __init__(self, args):
         try:
             cmd = self.__getattribute__(args.command_rgb)
@@ -126,27 +127,18 @@ class NexturnRGBController(NexturnConnectionController):
         return red, green, blue
 
     def _write_rgb(self, r, g, b, peripheral):
-        # print r,g,b
+        cv = struct.pack('BBBB', r, g, b, 0)
 
-        # return
-        # if anyone can find a better way to do this, it would be swell
-        rc = struct.pack('h', r)[0]
-        gc = struct.pack('h', g)[0]
-        bc = struct.pack('h', b)[0]
+        if not self.characteristics:
+            # get services
+            peripheral.discoverServices()
+            colorcontrol = peripheral.services.values()[2]
 
-        # get services
-        peripheral.discoverServices()
-        colorcontrol = peripheral.services.values()[2]
-
-        # get the values
-        x = colorcontrol.getCharacteristics()
+            # get the values
+            self.characteristics = colorcontrol.getCharacteristics()
 
         # write
-        x[0].write(rc)
-        x[1].write(gc)
-        x[2].write(bc)
-
-
+        self.characteristics[4].write(cv)        
 
     def rgb(self, r, g, b, p):
         self._write_rgb(r, g, b, p)
